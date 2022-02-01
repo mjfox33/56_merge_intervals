@@ -3,27 +3,12 @@ class Solution:
         if len(intervals) == 1:
             return intervals
         intervals.sort(key=lambda x:x[0])
-        index = 1
-        start = intervals[0][0]
-        end = intervals[0][1]
-        merged = list()
-        while 1:
-            if intervals[index][1] < end:
-                index += 1
-                if index == len(intervals):
-                    merged.append([start, end])
-                    break
-                continue
-            if intervals[index][0] < end:
-                end = intervals[index][1]
+        merged = [intervals[0]]
+        for interval in intervals:
+            if interval[0] <= merged[-1][1]:
+                merged[-1][1] = max(merged[-1][1], interval[1])
             else:
-                merged.append([start, end])
-                start = intervals[index][0]
-                end = intervals[index][1]
-            index += 1
-            if index == len(intervals):
-                merged.append([start, end])
-                break
+                merged.append(interval)
         return merged
         
 
